@@ -101,6 +101,10 @@ input[type="text"] {
   font-weight: 650;
   margin-left: 12.5rem;
 }
+.div-content__content-2__h2 {
+  position: relative;
+  top: 1rem;
+}
 .div-content__content-2,
 .div-content__content-3 {
   display: flex;
@@ -151,6 +155,9 @@ label,
   justify-content: space-around;
   align-items: center;
 }
+.div-content__content-2__form-chu-ky__van-ban-ky {
+  margin-top: 2.5rem;
+}
 .div-content__content-2__form-chu-ky__sign-1 {
   display: flex;
   justify-content: center;
@@ -189,7 +196,8 @@ label,
 }
 
 .check-number {
-  display: flex;
+  /* display: flex; */
+  display: none;
   justify-content: space-evenly;
   margin-top: 2rem;
 }
@@ -220,4 +228,16 @@ label,
   width: 9rem;
   margin-left: 2rem;
   margin-right: 4.2rem;
+}
+
+/* KIỂM SOÁT THAO TÁC NGƯỜI DÙNG */
+textarea {
+  resize: none;
+}
+
+#bam-1,
+#bam-2,
+#text-cky,
+#message {
+  pointer-events: none;
 }

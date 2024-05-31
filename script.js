@@ -1,4 +1,4 @@
-// GỌI BIẾN
+// TẠO BIẾN (CÁC BUTTON TRONG HTML):
 let taoKhoa = document.querySelector("#create-key");
 let ky = document.querySelector("#sign");
 let chuyen = document.querySelector("#chuyen");
@@ -8,6 +8,7 @@ let fileInputVBKyCheck = document.querySelector("#file_2_van_ban_ky_check");
 let fileInputCKyCheck = document.querySelector("#file_3_chu_ky_check");
 let saveFileTXT = document.querySelector("#saveFileTXT");
 let saveFileDOCX = document.querySelector("#saveFileDOCX");
+
 // FUNCTIONS:
 // CHUYỂN NHỊ PHÂN
 function chuyenNhiPhan(number) {
@@ -264,6 +265,11 @@ taoKhoa.addEventListener("click", () => {
 
 // KÝ
 ky.addEventListener("click", () => {
+  let textKy = document.querySelector("#text-ky").value;
+  if (textKy == "") {
+    alert("Vui lòng nhập thông tin của văn bản ký!");
+    return;
+  }
   let text = document.querySelector("#text-ky").value;
   detaGama(text);
 });
@@ -275,8 +281,22 @@ chuyen.addEventListener("click", () => {
   document.querySelector("#text-check-cky").value =
     document.querySelector("#text-cky").value;
 });
+
 // KIỂM TRA CHỮ KÝ
 kiemTra.addEventListener("click", () => {
+  let textKy = document.querySelector("#text-ky").value;
+  let textCheckKy = document.querySelector("#text-check-ky").value;
+  let textCKy = document.querySelector("#text-cky").value;
+  let textCheckCKy = document.querySelector("#text-check-cky").value;
+  if (
+    textKy == "" ||
+    textCheckKy == "" ||
+    textCKy == "" ||
+    textCheckCKy == ""
+  ) {
+    alert("Vui lòng nhập đủ thông tin!");
+    return;
+  }
   let text = document.querySelector("#text-check-ky").value;
   kiemTraChuKy(text);
 });
@@ -300,6 +320,7 @@ fileInputVBKy.addEventListener("change", function (event) {
 
     if (file.name.endsWith(".docx")) {
       reader.onload = function (e) {
+        // Trong thư viện mammoth sử dung ArrayBuffer để chuyển đổi nội dung tệp Word sang HTML
         const arrayBuffer = e.target.result;
         mammoth
           .convertToHtml({ arrayBuffer: arrayBuffer })
@@ -367,6 +388,7 @@ fileInputVBKyCheck.addEventListener("change", function (event) {
 
 // FILE 3: INPUT CHỮ KÝ CHECK
 fileInputCKyCheck.addEventListener("change", function (event) {
+  // Lấy tệp đầu tiên từ danh sách tệp được chọn.
   const file = event.target.files[0];
   if (file) {
     const reader = new FileReader();
@@ -375,8 +397,10 @@ fileInputCKyCheck.addEventListener("change", function (event) {
       reader.onload = function (e) {
         const arrayBuffer = e.target.result;
         mammoth
+          // Chuyển đổi tệp Word sang HTML
           .convertToHtml({ arrayBuffer: arrayBuffer })
           .then(function (result) {
+            // Loại bỏ các thẻ HTML bằng cách sử dụng biểu thức chính quy
             document.getElementById("text-check-cky").value =
               result.value.replace(/<\/?[^>]+(>|$)/g, "");
           })
@@ -386,6 +410,7 @@ fileInputCKyCheck.addEventListener("change", function (event) {
       };
       reader.readAsArrayBuffer(file);
     } else if (file.name.endsWith(".txt")) {
+      // Đọc nội dung văn bản trực tiếp.
       reader.onload = function (e) {
         const text = e.target.result;
         document.getElementById("text-check-cky").value = text;
@@ -402,17 +427,18 @@ fileInputCKyCheck.addEventListener("change", function (event) {
 // DOWNLOAD FILE
 // TXT
 saveFileTXT.addEventListener("click", () => {
-  const content = "Chữ ký: " + document.querySelector("#deta").value;
+  const content = "Chữ ký: \n" + document.querySelector("#text-cky").value;
   const fileName = "DownloadSign.txt";
+  // Tạo 1 đối tượng file với nội dung, tên như trên và kiểu file dựa vào content
   const file = new File([content], fileName, {
     type: content.type,
   });
-
+  // Dùng hàm saveAs để tải file
   saveAs(file);
 });
 // DOCX
 saveFileDOCX.addEventListener("click", () => {
-  const content = "Chữ ký: " + document.querySelector("#deta").value;
+  const content = "Chữ ký: \n" + document.querySelector("#text-cky").value;
   const fileName = "DownloadSign.docx";
 
   const doc = new window.docx.Document({
